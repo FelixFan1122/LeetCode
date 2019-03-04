@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace LeetCode
+namespace LeetCode.MissingNumber
 {
     public class Solution {
         public int MissingNumber(int[] nums) {
