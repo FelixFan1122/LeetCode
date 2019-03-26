@@ -2,20 +2,22 @@ namespace LeetCode.SortList
 {
     public class Solution {
         public ListNode SortList(ListNode head) {
-            var length = GetLength(head);
             int size;
-            ListNode start = head;
-            ListNode middle;
-            ListNode runner = new ListNode(int.MaxValue);
-            runner.next = head;
             int mid;
             int leftIndex;
             int rightIndex;
-            for (size = 2; size < length; size += size)
+            ListNode start;
+            ListNode middle;
+            ListNode runner;
+            var sentinel = new ListNode(int.MinValue);
+            sentinel.next = head;
+            var length = GetLength(sentinel);
+            for (size = 2; size < length * 2; size += size)
             {
+                runner = sentinel;
                 while (runner != null)
                 {
-                    start = runner;
+                    start = runner.next;
                     middle = start;
                     mid = size / 2;
                     while (middle != null && mid > 0)
@@ -28,7 +30,7 @@ namespace LeetCode.SortList
                     {
                         break;
                     }
-                    
+
                     leftIndex = size / 2;
                     rightIndex = size / 2;
                     while (middle != null && leftIndex > 0 && rightIndex > 0)
@@ -51,16 +53,18 @@ namespace LeetCode.SortList
 
                     if (middle == null || leftIndex > 0)
                     {
-                        runner = start;
+                        runner.next = start;
                         while (leftIndex > 0)
                         {
                             runner = runner.next;
                             leftIndex--;
                         }
+
+                        runner.next = middle == null ? null : middle;
                     }
                     else
                     {
-                        runner = middle;
+                        runner.next = middle;
                         while (runner != null && rightIndex > 0)
                         {
                             runner = runner.next;
@@ -70,7 +74,7 @@ namespace LeetCode.SortList
                 }
             }
 
-            return head;
+            return sentinel.next;
         }
 
         private static int GetLength(ListNode linkedList)
