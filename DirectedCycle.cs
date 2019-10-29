@@ -13,7 +13,7 @@ public class DirectedCycle<T>
 
         var currentPath = new HashSet<T>();
         var edgeTo = new Dictionary<T, T>();
-        var visited = new HashSet<T>();
+        var visited = new HashSet<T>(digraph.VertexNumber);
         foreach (var vertex in digraph.Vertices)
         {
             if (!visited.Contains(vertex))
