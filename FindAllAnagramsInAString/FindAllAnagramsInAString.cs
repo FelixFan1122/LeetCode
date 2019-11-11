@@ -1,63 +1,66 @@
 using System.Collections.Generic;
 
-public class Solution {
-    public IList<int> FindAnagrams(string s, string p) {
-        var anagrams = new List<int>();
-        if (s == null || p == null)
-        {
-            return anagrams;
-        }        
-        
-        var target = new Dictionary<char, int>();
-        foreach (var character in p)
-        {
-            if (!target.ContainsKey(character))
+namespace FindAllAnagramsInAString
+{
+    public class Solution {
+        public IList<int> FindAnagrams(string s, string p) {
+            var anagrams = new List<int>();
+            if (s == null || p == null)
             {
-                target.Add(character, 0);
-            }
+                return anagrams;
+            }        
             
-            target[character]++;
-        }
-        
-        var candidate = new Dictionary<char, int>();
-        var left = 0;
-        var right = 0;
-        while (right < s.Length)
-        {
-            if (target.ContainsKey(s[right]))
+            var target = new Dictionary<char, int>();
+            foreach (var character in p)
             {
-                if (!candidate.ContainsKey(s[right]))
+                if (!target.ContainsKey(character))
                 {
-                    candidate.Add(s[right], 0);
+                    target.Add(character, 0);
                 }
                 
-                candidate[s[right]]++;
-                if (candidate[s[right]] > target[s[right]])
+                target[character]++;
+            }
+            
+            var candidate = new Dictionary<char, int>();
+            var left = 0;
+            var right = 0;
+            while (right < s.Length)
+            {
+                if (target.ContainsKey(s[right]))
                 {
-                    while (left <= right && candidate[s[right]] > target[s[right]])
+                    if (!candidate.ContainsKey(s[right]))
                     {
+                        candidate.Add(s[right], 0);
+                    }
+                    
+                    candidate[s[right]]++;
+                    if (candidate[s[right]] > target[s[right]])
+                    {
+                        while (left <= right && candidate[s[right]] > target[s[right]])
+                        {
+                            candidate[s[left]]--;
+                            left++;
+                        }
+                    }
+                    
+                    if (right - left + 1 == p.Length)
+                    {
+                        anagrams.Add(left);
                         candidate[s[left]]--;
                         left++;
                     }
+                    
+                    right++;
                 }
-                
-                if (right - left + 1 == p.Length)
+                else
                 {
-                    anagrams.Add(left);
-                    candidate[s[left]]--;
-                    left++;
+                    right++;
+                    left = right;
+                    candidate.Clear();
                 }
-                
-                right++;
             }
-            else
-            {
-                right++;
-                left = right;
-                candidate.Clear();
-            }
+            
+            return anagrams;
         }
-        
-        return anagrams;
-    }
+    }                  
 }
