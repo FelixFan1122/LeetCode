@@ -69,7 +69,7 @@ public class MaxPriorityQueue<T> where T : IComparable<T>
         while ((leftChild <= Count && maxPriorityQueue[leftChild].CompareTo(maxPriorityQueue[index]) > 0) ||
             (rightChild <= Count && maxPriorityQueue[rightChild].CompareTo(maxPriorityQueue[index]) > 0))
         {
-            larger = leftChild > rightChild ? leftChild : rightChild;
+            larger = maxPriorityQueue[leftChild].CompareTo(maxPriorityQueue[rightChild]) > 0 ? leftChild : rightChild;
             temp = maxPriorityQueue[larger];
             maxPriorityQueue[larger] = maxPriorityQueue[index];
             maxPriorityQueue[index] = temp;
