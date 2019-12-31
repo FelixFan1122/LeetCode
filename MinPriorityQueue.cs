@@ -89,7 +89,7 @@ namespace LeetCode
             while ((leftChild <= Count && minPriorityQueue[leftChild].CompareTo(minPriorityQueue[index]) < 0) ||
                 (rightChild <= Count && minPriorityQueue[rightChild].CompareTo(minPriorityQueue[index]) < 0))
             {
-                smaller = minPriorityQueue[leftChild].CompareTo(minPriorityQueue[rightChild]) < 0 ? leftChild : rightChild;
+                smaller = rightChild <= Count && minPriorityQueue[rightChild].CompareTo(minPriorityQueue[leftChild]) < 0 ? rightChild : leftChild;
                 temp = minPriorityQueue[smaller];
                 minPriorityQueue[smaller] = minPriorityQueue[index];
                 minPriorityQueue[index] = temp;
