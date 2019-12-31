@@ -5,11 +5,9 @@ namespace LeetCode
 {
     public class MinPriorityQueue<T> where T : IComparable<T>
     {
+        private const int Capacity = 1;
         private T[] minPriorityQueue;
-        public MinPriorityQueue()
-        {
-            throw new NotImplementedException();
-        }
+        public MinPriorityQueue() : this(Capacity) { }
 
         public MinPriorityQueue(int capacity)
         {
@@ -46,8 +44,13 @@ namespace LeetCode
 
         public void Add(T element)
         {
+            if (Count == minPriorityQueue.Length - 1)
+            {
+                Resize(minPriorityQueue.Length * 2);
+            }
+
             Count++;
-            minPriorityQueue[Count] = element; // TODO: Implement array resizing.
+            minPriorityQueue[Count] = element;
             Swim(Count);
         }
 
@@ -56,10 +59,25 @@ namespace LeetCode
             var min = minPriorityQueue[1];
             minPriorityQueue[1] = minPriorityQueue[Count];
             minPriorityQueue[Count] = default(T);
-            Count--; // TODO: Implement array resizing;
+            Count--;
             Sink(1);
+            if (Count > 0 && Count == minPriorityQueue.Length / 4 - 1)
+            {
+                Resize(minPriorityQueue.Length / 2);
+            }
 
             return min;
+        }
+
+        private void Resize(int size)
+        {
+            var resized = new T[size];
+            for (var i = 1; i <= Count; i++)
+            {
+                resized[i] = minPriorityQueue[i];
+            }
+
+            minPriorityQueue = resized;
         }
 
         private void Sink(int index)

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 public class MaxPriorityQueue<T> where T : IComparable<T>
 {
+    private const int Capacity = 1;
     private T[] maxPriorityQueue;
-    public MaxPriorityQueue()
-    {
-        throw new NotImplementedException();
-    }
+    public MaxPriorityQueue() : this(Capacity) { }
 
     public MaxPriorityQueue(int capacity)
     {
@@ -44,8 +42,13 @@ public class MaxPriorityQueue<T> where T : IComparable<T>
 
     public void Add(T element)
     {
+        if (Count == maxPriorityQueue.Length - 1)
+        {
+            Resize(maxPriorityQueue.Length * 2);
+        }
+
         Count++;
-        maxPriorityQueue[Count] = element; // TODO: Implement array resizing.
+        maxPriorityQueue[Count] = element;
         Swim(Count);
     }
 
@@ -54,10 +57,25 @@ public class MaxPriorityQueue<T> where T : IComparable<T>
         var max = maxPriorityQueue[1];
         maxPriorityQueue[1] = maxPriorityQueue[Count];
         maxPriorityQueue[Count] = default(T);
-        Count--; // TODO: Implement array resizing;
+        Count--;
         Sink(1);
-
+        if (Count > 0 && Count == maxPriorityQueue.Length / 4 - 1)
+        {
+            Resize(maxPriorityQueue.Length / 2);
+        }
+        
         return max;
+    }
+
+    private void Resize(int size)
+    {
+        var resized = new T[size];
+        for (var i = 1; i <= Count; i++)
+        {
+            resized[i] = maxPriorityQueue[i];
+        }
+
+        maxPriorityQueue = resized;
     }
 
     private void Sink(int index)
