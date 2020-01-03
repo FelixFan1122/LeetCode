@@ -7,32 +7,32 @@ namespace LeetCode.WiggleSortII
             var median = new KthLargestElementInAnArray.Solution()
                 .FindKthLargest(nums, (nums.Length + 1) / 2);
 
-            var i = 0;
-            var j = 0;
-            var k = nums.Length - 1;
-            while (j <= k)
+            var nextSmaller = nums.Length - 1;
+            var current = 0;
+            var nextBigger = 0;
+            while (current <= nextSmaller)
             {
-                var jj = (j * 2 + 1) % (nums.Length | 1);
-                if (nums[jj] < median)
+                var currentMapped = (current * 2 + 1) % (nums.Length | 1);
+                if (nums[currentMapped] < median)
                 {
-                    var kk = (k * 2 + 1) % (nums.Length | 1);
-                    var temp = nums[jj];
-                    nums[jj] = nums[kk];
-                    nums[kk] = temp;
-                    k--;
+                    var nextSmallerMapped = (nextSmaller * 2 + 1) % (nums.Length | 1);
+                    var temp = nums[currentMapped];
+                    nums[currentMapped] = nums[nextSmallerMapped];
+                    nums[nextSmallerMapped] = temp;
+                    nextSmaller--;
                 }
-                else if (nums[jj] == median)
+                else if (nums[currentMapped] == median)
                 {
-                    j++;
+                    current++;
                 }
                 else
                 {
-                    var ii = (i * 2 + 1) % (nums.Length | 1);
-                    var temp = nums[jj];
-                    nums[jj] = nums[ii];
-                    nums[ii] = temp;
-                    i++;
-                    j++;
+                    var nextBiggerMapped = (nextBigger * 2 + 1) % (nums.Length | 1);
+                    var temp = nums[currentMapped];
+                    nums[currentMapped] = nums[nextBiggerMapped];
+                    nums[nextBiggerMapped] = temp;
+                    nextBigger++;
+                    current++;
                 }
             }
         }
