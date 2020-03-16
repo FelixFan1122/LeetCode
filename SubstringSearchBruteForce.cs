@@ -21,21 +21,23 @@ namespace LeetCode
                 return 0;
             }
 
-            for (var i = 0; i <= haystack.Length - needle.Length; i++)
+            var i = 0;
+            var j = 0;
+            while (i < haystack.Length && j < needle.Length)
             {
-                var j = 0;
-                while (j < needle.Length && haystack[i + j] == needle[j])
+                if (haystack[i] == needle[j])
                 {
+                    i++;
                     j++;
                 }
-
-                if (j == needle.Length)
+                else
                 {
-                    return i;
+                    i = i - j + 1;
+                    j = 0;
                 }
             }
 
-            return -1;
+            return j == needle.Length ? i - j : -1;
         }
     }
 }
