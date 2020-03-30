@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace LeetCode.FirstUniqueCharacterInAString
 {
     public class Solution
@@ -9,21 +11,27 @@ namespace LeetCode.FirstUniqueCharacterInAString
                 return -1;
             }
 
-            var frequencies = new int[26];
-            foreach (var character in s)
+            var firstAppearances = new int[26];
+            for (var i = 0; i < firstAppearances.Length; i++)
             {
-                frequencies[character - 'a']++;
+                firstAppearances[i] = s.Length;
             }
 
             for (var i = 0; i < s.Length; i++)
             {
-                if (frequencies[s[i] - 'a'] == 1)
+                var character = s[i] - 'a';
+                if (firstAppearances[character] == s.Length)
                 {
-                    return i;
+                    firstAppearances[character] = i;
+                }
+                else
+                {
+                    firstAppearances[character] = s.Length + 1;
                 }
             }
 
-            return -1;
+            var first = firstAppearances.Min();
+            return first < s.Length ? first : -1;
         }
     }
 }
