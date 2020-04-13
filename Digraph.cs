@@ -1,59 +1,62 @@
 using System;
 using System.Collections.Generic;
 
-public class Digraph<T>
+namespace LeetCode
 {
-    private readonly Dictionary<T, List<T>> adjacencyList;
-
-    public Digraph()
+    public class Digraph<T>
     {
-        adjacencyList = new Dictionary<T, List<T>>();
-    }
+        private readonly Dictionary<T, List<T>> adjacencyList;
 
-    public Digraph(int capacity)
-    {
-        adjacencyList = new Dictionary<T, List<T>>(capacity);
-    }
-
-    public int VertexNumber
-    {
-        get
+        public Digraph()
         {
-            return adjacencyList.Count;
+            adjacencyList = new Dictionary<T, List<T>>();
         }
-    }
 
-    public IEnumerable<T> Vertices
-    {
-        get
+        public Digraph(int capacity)
         {
-            return adjacencyList.Keys;
+            adjacencyList = new Dictionary<T, List<T>>(capacity);
         }
-    }
 
-    public void AddEdge(T from, T to)
-    {
-        AddVertex(from);
-        AddVertex(to);
-
-        adjacencyList[from].Add(to);
-    }
-
-    public void AddVertex(T vertex)
-    {
-        if (!adjacencyList.ContainsKey(vertex))
+        public int VertexNumber
         {
-            adjacencyList.Add(vertex, new List<T>());
+            get
+            {
+                return adjacencyList.Count;
+            }
         }
-    }
 
-    public IEnumerable<T> GetNeighbours(T vertex)
-    {
-        if (!adjacencyList.ContainsKey(vertex))
+        public IEnumerable<T> Vertices
         {
-            throw new ArgumentException();
+            get
+            {
+                return adjacencyList.Keys;
+            }
         }
-        
-        return adjacencyList[vertex];
+
+        public void AddEdge(T from, T to)
+        {
+            AddVertex(from);
+            AddVertex(to);
+
+            adjacencyList[from].Add(to);
+        }
+
+        public void AddVertex(T vertex)
+        {
+            if (!adjacencyList.ContainsKey(vertex))
+            {
+                adjacencyList.Add(vertex, new List<T>());
+            }
+        }
+
+        public IEnumerable<T> GetNeighbours(T vertex)
+        {
+            if (!adjacencyList.ContainsKey(vertex))
+            {
+                throw new ArgumentException();
+            }
+
+            return adjacencyList[vertex];
+        }
     }
 }
