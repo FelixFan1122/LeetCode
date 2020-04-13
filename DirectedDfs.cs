@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LeetCode
 {
@@ -11,6 +12,11 @@ namespace LeetCode
             if (digraph == null)
             {
                 throw new ArgumentNullException(nameof(digraph));
+            }
+
+            if (!digraph.Vertices.Contains(source))
+            {
+                throw new ArgumentOutOfRangeException(nameof(source));
             }
 
             marked = new HashSet<T>(digraph.VertexNumber);
@@ -26,7 +32,7 @@ namespace LeetCode
             }
 
             marked = new HashSet<T>(digraph.VertexNumber);
-            foreach (var source in sources)
+            foreach (var source in sources.Intersect(digraph.Vertices))
             {
                 Dfs(digraph, source);
             }
