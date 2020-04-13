@@ -1,20 +1,23 @@
 using System;
 using System.Collections.Generic;
 
-public class Topological<T>
+namespace LeetCode
 {
-    public Topological(Digraph<T> digraph)
+    public class Topological<T>
     {
-        if (digraph == null)
+        public Topological(Digraph<T> digraph)
         {
-            throw new ArgumentNullException(nameof(digraph));
+            if (digraph == null)
+            {
+                throw new ArgumentNullException(nameof(digraph));
+            }
+
+            if (!new DirectedCycle<T>(digraph).HasCycle)
+            {
+                Order = new DepthFirstOrder<T>(digraph).ReversePostOrder;
+            }
         }
 
-        if (!new DirectedCycle<T>(digraph).HasCycle)
-        {
-            Order = new DepthFirstOrder<T>(digraph).ReversePostOrder;
-        }
+        public IEnumerable<T> Order { get; private set; }
     }
-
-    public IEnumerable<T> Order { get; private set; }
 }
