@@ -1,70 +1,73 @@
 using System;
 using System.Collections.Generic;
 
-public class DepthFirstOrder<T>
+namespace LeetCode
 {
-    private Queue<T> postOrder;
-    private Queue<T> preOrder;
-    private Stack<T> reversePostOrder;
-    public DepthFirstOrder(Digraph<T> digraph)
+    public class DepthFirstOrder<T>
     {
-        if (digraph == null)
+        private Queue<T> postOrder;
+        private Queue<T> preOrder;
+        private Stack<T> reversePostOrder;
+        public DepthFirstOrder(Digraph<T> digraph)
         {
-            throw new ArgumentNullException(nameof(digraph));
-        }
-        
-        postOrder = new Queue<T>(digraph.VertexNumber);
-        preOrder = new Queue<T>(digraph.VertexNumber);
-        reversePostOrder = new Stack<T>(digraph.VertexNumber);
-
-        var visited = new HashSet<T>(digraph.VertexNumber);
-        foreach (var vertex in digraph.Vertices)
-        {
-            if (!visited.Contains(vertex))
+            if (digraph == null)
             {
-                DepthFirstTraverse(digraph, vertex, visited);
+                throw new ArgumentNullException(nameof(digraph));
             }
-        }
-    }
 
-    public IEnumerable<T> PostOrder
-    {
-        get
-        {
-            return postOrder;
-        }
-    }
+            postOrder = new Queue<T>(digraph.VertexNumber);
+            preOrder = new Queue<T>(digraph.VertexNumber);
+            reversePostOrder = new Stack<T>(digraph.VertexNumber);
 
-    public IEnumerable<T> PreOrder
-    {
-        get
-        {
-            return preOrder;
-        }
-    }
-
-    public IEnumerable<T> ReversePostOrder
-    {
-        get
-        {
-            return reversePostOrder;
-        }
-    }
-
-    private void DepthFirstTraverse(Digraph<T> digraph, T vertex, HashSet<T> visited)
-    {
-        preOrder.Enqueue(vertex);
-
-        visited.Add(vertex);
-        foreach (var neighbour in digraph.GetNeighbours(vertex))
-        {
-            if (!visited.Contains(neighbour))
+            var visited = new HashSet<T>(digraph.VertexNumber);
+            foreach (var vertex in digraph.Vertices)
             {
-                DepthFirstTraverse(digraph, neighbour, visited);
+                if (!visited.Contains(vertex))
+                {
+                    DepthFirstTraverse(digraph, vertex, visited);
+                }
             }
         }
 
-        postOrder.Enqueue(vertex);
-        reversePostOrder.Push(vertex);
+        public IEnumerable<T> PostOrder
+        {
+            get
+            {
+                return postOrder;
+            }
+        }
+
+        public IEnumerable<T> PreOrder
+        {
+            get
+            {
+                return preOrder;
+            }
+        }
+
+        public IEnumerable<T> ReversePostOrder
+        {
+            get
+            {
+                return reversePostOrder;
+            }
+        }
+
+        private void DepthFirstTraverse(Digraph<T> digraph, T vertex, HashSet<T> visited)
+        {
+            preOrder.Enqueue(vertex);
+
+            visited.Add(vertex);
+            foreach (var neighbour in digraph.GetNeighbours(vertex))
+            {
+                if (!visited.Contains(neighbour))
+                {
+                    DepthFirstTraverse(digraph, neighbour, visited);
+                }
+            }
+
+            postOrder.Enqueue(vertex);
+            reversePostOrder.Push(vertex);
+        }
     }
 }

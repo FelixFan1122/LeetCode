@@ -1,75 +1,78 @@
 using System;
 using System.Collections.Generic;
 
-public class DirectedCycle<T>
+namespace LeetCode
 {
-    private Stack<T> cycle;
-    public DirectedCycle(Digraph<T> digraph)
+    public class DirectedCycle<T>
     {
-        if (digraph == null)
+        private Stack<T> cycle;
+        public DirectedCycle(Digraph<T> digraph)
         {
-            throw new ArgumentNullException(nameof(digraph));
-        }
-
-        var currentPath = new HashSet<T>();
-        var edgeTo = new Dictionary<T, T>();
-        var visited = new HashSet<T>(digraph.VertexNumber);
-        foreach (var vertex in digraph.Vertices)
-        {
-            if (!visited.Contains(vertex))
+            if (digraph == null)
             {
-                DepthFirstTraverse(digraph, vertex, visited, currentPath, edgeTo);
-            }
-        }
-    }
-
-    public IEnumerable<T> Cycle
-    {
-        get
-        {
-            return cycle;
-        }
-    }
-
-    public bool HasCycle
-    {
-        get
-        {
-            return cycle != null;
-        }
-    }
-
-    private void DepthFirstTraverse(Digraph<T> digraph, T vertex, HashSet<T> visited, HashSet<T> currentPath, Dictionary<T, T> edgeTo)
-    {
-        currentPath.Add(vertex);
-        visited.Add(vertex);
-        foreach (var neighbour in digraph.GetNeighbours(vertex))
-        {
-            if (HasCycle)
-            {
-                return;
+                throw new ArgumentNullException(nameof(digraph));
             }
 
-            if (!visited.Contains(neighbour))
+            var currentPath = new HashSet<T>();
+            var edgeTo = new Dictionary<T, T>();
+            var visited = new HashSet<T>(digraph.VertexNumber);
+            foreach (var vertex in digraph.Vertices)
             {
-                edgeTo.Add(neighbour, vertex);
-                DepthFirstTraverse(digraph, neighbour, visited, currentPath, edgeTo);
-            }
-            else if (currentPath.Contains(neighbour))
-            {
-                cycle = new Stack<T>();
-                var current = vertex;
-                while (!current.Equals(neighbour))
+                if (!visited.Contains(vertex))
                 {
-                    cycle.Push(current);
-                    current = edgeTo[current];
+                    DepthFirstTraverse(digraph, vertex, visited, currentPath, edgeTo);
+                }
+            }
+        }
+
+        public IEnumerable<T> Cycle
+        {
+            get
+            {
+                return cycle;
+            }
+        }
+
+        public bool HasCycle
+        {
+            get
+            {
+                return cycle != null;
+            }
+        }
+
+        private void DepthFirstTraverse(Digraph<T> digraph, T vertex, HashSet<T> visited, HashSet<T> currentPath, Dictionary<T, T> edgeTo)
+        {
+            currentPath.Add(vertex);
+            visited.Add(vertex);
+            foreach (var neighbour in digraph.GetNeighbours(vertex))
+            {
+                if (HasCycle)
+                {
+                    return;
                 }
 
-                cycle.Push(neighbour);
-                cycle.Push(vertex);
-            }
-        }
+                if (!visited.Contains(neighbour))
+                {
+                    edgeTo.Add(neighbour, vertex);
+                    DepthFirstTraverse(digraph, neighbour, visited, currentPath, edgeTo);
+                }
+                else if (currentPath.Contains(neighbour))
+                {
+                    cycle = new Stack<T>();
+                    var current = vertex;
+                    while (!current.Equals(neighbour))
+                    {
+                        cycle.Push(current);
+                        current = edgeTo[current];
+                    }
 
-        currentPath.Remove(vertex);
+                    cycle.Push(neighbour);
+                    cycle.Push(vertex);
+                }
+            }
+
+            currentPath.Remove(vertex);
+        }
     }
 }
