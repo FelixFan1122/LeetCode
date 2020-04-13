@@ -3,7 +3,17 @@ using System.Collections.Generic;
 
 public class Digraph<T>
 {
-    private readonly Dictionary<T, List<T>> adjacencyList = new Dictionary<T, List<T>>();
+    private readonly Dictionary<T, List<T>> adjacencyList;
+
+    public Digraph()
+    {
+        adjacencyList = new Dictionary<T, List<T>>();
+    }
+
+    public Digraph(int capacity)
+    {
+        adjacencyList = new Dictionary<T, List<T>>(capacity);
+    }
 
     public int VertexNumber
     {
