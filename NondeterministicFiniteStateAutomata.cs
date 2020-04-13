@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -63,6 +64,11 @@ namespace LeetCode
 
         public bool Recognize(string text)
         {
+            if (text == null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+            
             var dfs = new DirectedDfs<int>(epsilonTransitions, 0);
             IEnumerable<int> states = epsilonTransitions.Vertices.Where(dfs.IsMarked);
             foreach (var character in text)
