@@ -47,6 +47,7 @@ namespace LeetCode
         {
             if (!marked.Contains(vertex))
             {
+                marked.Add(vertex);
                 foreach (var neighbour in digraph.GetNeighbours(vertex))
                 {
                     Dfs(digraph, neighbour);
