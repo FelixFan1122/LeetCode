@@ -22,6 +22,7 @@ namespace LeetCode
             var operators = new Stack<int>();
             for (var i = 0; i < regularExpression.Length; i++)
             {
+                epsilonTransitions.AddVertex(i);
                 switch (this.regularExpression[i])
                 {
                     case Closure:
@@ -73,7 +74,8 @@ namespace LeetCode
             IEnumerable<int> states = epsilonTransitions.Vertices.Where(dfs.IsMarked);
             foreach (var character in text)
             {
-                var match = states.Where(s => s < regularExpression.Length && (regularExpression[s] == character || regularExpression[s] == Wildcard));
+                var match = states.Where(s => s < regularExpression.Length && (regularExpression[s] == character || regularExpression[s] == Wildcard))
+                    .Select(s => s + 1);
                 dfs = new DirectedDfs<int>(epsilonTransitions, match);
                 states = epsilonTransitions.Vertices.Where(dfs.IsMarked);
             }
