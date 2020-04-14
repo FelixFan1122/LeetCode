@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace LeetCode.QuickSelect
+namespace LeetCode
 {
     public static class QuickSelect
     {
